@@ -1,0 +1,31 @@
+.all-donations{
+    width: 80%;
+    margin: 30px auto;
+    padding: 30px 60px;
+    background-color: var(--color-six);
+    box-shadow: 0 0px 10px 0px var(--color-two);
+    border-radius: 5px;
+    color: var(--color-one);
+}
+
+.table{
+    width: 100%;
+}
+
+th, td{
+    text-align: left;
+    padding: 5px 0;
+}
+
+td.table-button{
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 12px;
+    background-color: var(--color-one);
+    color: #fff;
+    text-align: center;
+}
+
+td.table-button:nth-last-child(1){
+    background-color: rgba(255, 0, 0, 0.8);
+}

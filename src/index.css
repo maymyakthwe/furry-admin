@@ -11,3 +11,10 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.validation-text {
+  font-size: 12px;
+  font-weight: 400;
+  color: #ff0000;
+  text-align: center;
+}

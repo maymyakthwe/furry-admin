@@ -1,0 +1,32 @@
+.admin-menu {
+    width: 80%;
+    margin: 30px auto;
+    display: flex;
+    justify-content: space-between;
+    box-shadow: 0 0px 10px 0px var(--color-two);
+    background-color: var(--color-four);
+    padding: 30px;
+    border-radius: 5px;
+}
+
+.admin-data {
+    width: 30%;
+    padding: 20px;
+    background-color: var(--color-six);
+    box-shadow: 0 0px 10px 0px var(--color-two);
+    border-radius: 5px;
+    color: #000;
+    font-size: 25px;
+}
+
+.admin-data h3 {
+    padding-bottom: 20px;
+}
+
+.admin-data p {
+    padding: 5px 0;
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    font-size: 16px;
+}

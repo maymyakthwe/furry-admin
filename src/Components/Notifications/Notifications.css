@@ -1,0 +1,21 @@
+.each-noti{
+    width: 80%;
+    margin: 30px auto;
+    padding: 30px 60px;
+    background-color: var(--color-six);
+    box-shadow: 0 0px 10px 0px var(--color-two);
+    border-radius: 5px;
+    color: var(--color-one);
+    font-size: 18px;
+    color: #000;
+}
+
+.each-noti span{
+    font-weight: 600;
+}
+
+.each-noti-admin{
+    padding-top: 10px ;
+    font-size: 12px;
+    color: rgba(0, 0, 0,0.5);
+}

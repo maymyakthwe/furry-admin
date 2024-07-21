@@ -1,0 +1,91 @@
+.admin-page {
+    width: 80%;
+    margin: 30px auto;
+    padding: 30px 60px;
+    background-color: var(--color-six);
+    box-shadow: 0 0px 10px 0px var(--color-two);
+    border-radius: 5px;
+    color: var(--color-one);
+    font-size: 20px;
+}
+
+.add-data-form {
+    padding: 20px 40px;
+    border: 2px solid var(--color-two);
+    border-radius: 10px;
+}
+
+.form-input {
+    padding: 10px 0px;
+    margin: 10px 0;
+    display: flex;
+    justify-content: space-between;
+}
+
+.add-data-form input,
+.add-data-form textarea {
+    width: 400px;
+    padding: 5px 3px;
+    border: 1px solid var(--color-two);
+    border-radius: 3px;
+}
+
+.form-label {
+    width: 60%;
+}
+
+.form-input-radio {
+    width: 200px;
+    display: flex;
+}
+
+.form-input-radio input {
+    width: 20px;
+}
+
+.submit button {
+    width: 200px;
+    height: 30px;
+    border: none;
+    border-radius: 3px;
+    background-color: var(--color-two);
+    color: #fff;
+    text-decoration: underline;
+    cursor: pointer;
+    margin-left: 20px;
+}
+
+
+.form-input-imagefield {
+    width: 100%;
+    color: #7b7b7b;
+    font-size: 16px;
+}
+
+.form-input-imagefield label {
+    display: flex;
+    justify-content: space-between;
+    color: var(--color-one);
+    font-size: 20px;
+}
+
+.form-input-imagefield input {
+    box-sizing: border-box;
+    width: 100%;
+    height: 50px;
+    border-radius: 4px;
+    padding-left: 15px;
+    border: 1px solid #c3c3c3;
+    outline: none;
+    color: #7b7b7b;
+    font-family: 'Poppins';
+    font-size: 14px;
+}
+
+.pet-input-thumnail-img {
+    height: 120px;
+    width: 120px;
+    border-radius: 10px;
+    object-fit: contain;
+    margin: 10px 0px;
+}
