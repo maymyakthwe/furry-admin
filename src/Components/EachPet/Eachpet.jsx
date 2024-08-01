@@ -22,15 +22,15 @@ const Eachpet = () => {
     }
     
     const DeleteHandler = async()=>{
-        let response;
         await fetch(`http://localhost:4000/pets/${petId}/delete`,{
             method:"DELETE"
         }).then((res) => res.json())
-            .then((data) => response=data)
-            if(response.success){
-                alert(`${response.name} is removed from the pet list.`)
-                window.location.replace('/pets')
-            }
+            .then((data) => {
+                if (data.success) {
+                    alert(data.message)
+                    window.location.replace('/pets')
+                }
+            })
     }
 
 
@@ -108,16 +108,13 @@ const Eachpet = () => {
     }
 
     const updatePet = async () => {
-
-        let petData = pet;
         let imageRes;
-        let response;
-        console.log(image);
 
-        console.log(petData)
+        const petData  = pet;
 
         if (!image) {
-
+            //if image is not changed -> no image value -> for update only
+            //just update the other values
             await fetch(`http://localhost:4000/pets/${petId}/update`, {
                 method: "PUT",
                 headers: {
@@ -126,8 +123,18 @@ const Eachpet = () => {
                 },
                 body: JSON.stringify(petData)
             }).then((res) => res.json())
-                .then((data) => response = data)
+                .then((data) => {
+                    if (data.success) {
+                        alert(data.message);
+                        window.location.reload();
+                    }else{
+                        alert(data.message);
+                    }
+                })
+
         } else {
+            //if image is changed -> new image value -> upload image first
+            //then update other values
             let formdata = new FormData();
             formdata.append("pet", image);
 
@@ -142,7 +149,6 @@ const Eachpet = () => {
 
             if (imageRes.success) {
                 petData.pet_image = imageRes.image_url;
-                console.log(petData)
 
                 await fetch(`http://localhost:4000/pets/${petId}/update`, {
                     method: "PUT",
@@ -152,15 +158,16 @@ const Eachpet = () => {
                     },
                     body: JSON.stringify(petData)
                 }).then((res) => res.json())
-                    .then((data) => response = data)
+                    .then((data) => {
+                        if (data.success) {
+                            alert(data.message);
+                            window.location.reload();
+                        } else {
+                            alert(data.message);
+                        }
+                    })
             }
         }
-
-        if (response.success) {
-            alert(`Pet ID ${petId} is updated.`);
-            window.location.reload();
-        }
-
     }
     
     useEffect(()=>{
@@ -200,6 +207,9 @@ return (<>
                 </div>
                 <div className='pet-info-details'>
                     <span >Available for Adoption </span><span>{pet.isAdoptable ? "Available" : "Not Available"}</span>
+                </div>
+                <div className='pet-info-details'>
+                    <span >Is a Playmate </span><span>{pet.isPlaymate ? "Yes" : "No"}</span>
                 </div>
                 <div className='submit'>
                     <button onClick={() => { setPopUp('update') }}>Update</button>

@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import './Signup.css'
 import FFRLogo from '../../Assets/images/FFRLogo.png'
 
-
 const Signup = () => {
 
     const [admin, setAdmin] = useState({});
@@ -14,6 +13,7 @@ const Signup = () => {
         })
     }
 
+    //client side validation
     const validationCheck = (e) => {
         e.preventDefault();
 
@@ -26,7 +26,7 @@ const Signup = () => {
         //password validation
         if (!admin.admin_password) {
             validationErrors.admin_password = "Password is required";
-        } else if (admin.admin_password.length < 6) {
+        } else if (admin.admin_password.length < 3) {
             validationErrors.admin_password = "Password need to be at least 6 characters";
         }
 
@@ -43,8 +43,6 @@ const Signup = () => {
     }
 
     const createUser = async () => {
-        let response;
-
         await fetch('http://localhost:4000/admin/signup', {
             method: 'POST',
             headers: {
@@ -53,16 +51,14 @@ const Signup = () => {
             },
             body: JSON.stringify(admin),
         }).then((res) => res.json()).then((data) => {
-            response = data;
+            if (data.success) {
+                alert(data.message);
+                localStorage.setItem('auth-token', data.token);
+                window.location.replace('/home')
+            }else{
+                alert(data.message);
+            }
         })
-
-        if (response.success) {
-            localStorage.setItem('auth-token', response.token);
-            alert("Admin Added");
-            window.location.replace('/')
-        } else {
-            alert(response.errors);
-        }
     }
 
     return (
@@ -75,7 +71,7 @@ const Signup = () => {
                 <div className="signup-form">
                     <div className='signup-headline'>
                         <h2>Signup</h2>
-                        <p>Already Have an account? <a href="/login">Login</a></p>
+                        <p>Already Have an account? <a href="/">Login</a></p>
                     </div>
                     <div className='signup-info'>
                         <label htmlFor="">Name  </label>

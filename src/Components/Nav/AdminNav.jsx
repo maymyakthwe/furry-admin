@@ -28,7 +28,7 @@ const AdminNav = () => {
   return (
       <div className='navbar'>
           <div className='nav-wrapper'>
-              <a href='/' className="nav-home">
+              <a href='/home' className="nav-home">
                   <img className='nav-logo' src={FFRLogo} alt="" />
                   <p>Furry Friends Refuge</p>
               </a>
@@ -46,7 +46,7 @@ const AdminNav = () => {
                           </div>
                       </div> :
                       <>
-                          <a href="/login">Login <hr /></a>
+                          <a href="/">Login <hr /></a>
                           <a href="/signup">Signup <hr /></a>
                       </>}
 

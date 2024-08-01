@@ -48,9 +48,9 @@ const AllDonations = () => {
                   return <tr key={index}>
                   <td>{index+1}</td>
                   <td>{d.user.user_name}</td>
-                  <td>{d.donate_amount}</td>
-                  <td>{d.donate_date}</td>
-                  <td>{d.donate_description?d.donate_description:"none"}</td>
+                  <td>{d.donation_amount}</td>
+                  <td>{d.donation_date}</td>
+                  <td>{d.donation_description?d.donate_description:"none"}</td>
                   <td>{d.admin.admin_name}</td>
                   <td className='table-button'>Update</td>
                   <td onClick={()=>{deleteDonation(d._id)}} className='table-button'>Remove</td>

@@ -37,8 +37,6 @@ const Login = () => {
   }
 
   const login = async () => {
-    let response;
-
     await fetch('http://localhost:4000/admin/login', {
       method: 'POST',
       headers: {
@@ -46,15 +44,15 @@ const Login = () => {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify(admin),
-    }).then((res) => res.json()).then((data) => response = data)
-
-    if (response.success) {
-      alert("Logged in");
-      localStorage.setItem("auth-token", response.token);
-      window.location.replace('/')
-    } else {
-      alert(response.errors);
-    }
+    }).then((res) => res.json()).then((data) => {
+      if (data.success) {
+        alert(data.message);
+        localStorage.setItem("auth-token", data.token);
+        window.location.replace('/home')
+      } else {
+        alert(data.message);
+      }
+    })
   }
 
   return (

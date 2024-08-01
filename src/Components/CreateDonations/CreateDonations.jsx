@@ -4,7 +4,7 @@ import './CreateDonations.css'
 const CreateDonations = () => {
     const [donation, setDonation] = useState({})
     const [errors, setErrors] = useState({});
-
+    let token = localStorage.getItem('auth-token');
 
     const changeHandler = (e) => {
         setDonation({
@@ -16,9 +16,7 @@ const CreateDonations = () => {
     const addDonation = async () => {
 
         let donationData = donation;
-        let response;
 
-        let token = localStorage.getItem('auth-token');
         donationData.token = token;
 
         await fetch('http://localhost:4000/donations', {
@@ -28,14 +26,15 @@ const CreateDonations = () => {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(donationData),
-        }).then((res) => res.json()).then((data) => { response = data })
-        if (response.success) {
-            alert("Doantion Created");
-            setDonation({ user_email: '', petId: '', adp_amount: '', adp_date: '' });
-            window.location.reload();
-        } else {
-            alert("failed");
-        }
+        }).then((res) => res.json()).then((data) => {
+            if (data.success) {
+                alert(data.message);
+                setDonation({ user_email: '', petId: '', adp_amount: '', adp_date: '' });
+                window.location.reload();
+            } else {
+                alert(data.message);
+            } 
+        })
     }
 
     const validationCheck = (e) => {
@@ -43,14 +42,20 @@ const CreateDonations = () => {
 
         const validationErrors = {};
 
-        //email validation
+        if (!token) {
+            validationErrors.user_name = "Please log in!";
+        }
+
         if (!donation.user_email) {
             validationErrors.user_email = "Email is required";
         }
 
-        //email validation
-        if (!donation.donate_amount) {
-            validationErrors.donate_amount = "Amount is required";
+        if (!donation.donation_date) {
+            validationErrors.donation_date = "Date is required";
+        }
+
+        if (!donation.donation_amount) {
+            validationErrors.donation_amount = "Amount is required";
         }
 
         setErrors(validationErrors);
@@ -72,19 +77,23 @@ const CreateDonations = () => {
                 </div>
                 <div className="form-input">
                     <label htmlFor="" >Donation Date :</label>
-                    <input onChange={changeHandler} type="date" name='donate_date' />
+                    <div>
+                        <input onChange={changeHandler} type="date" name='donation_date' />
+                        {errors.donation_date && <div className='validation-text'>{errors.donation_date}</div>}
+                    </div>
                 </div>
                 <div className="form-input">
                     <label htmlFor="" >Donation Amount :</label>
                     <div>
-                        <input onChange={changeHandler} type="number" name='donate_amount' placeholder="$0" />
-                        {errors.donate_amount && <div className='validation-text'>{errors.donate_amount}</div>}
+                        <input onChange={changeHandler} type="number" name='donation_amount' placeholder="$0" />
+                        {errors.donation_amount && <div className='validation-text'>{errors.donation_amount}</div>}
                     </div>
                 </div>
                 <div className="form-input">
                     <label htmlFor="" >Description :</label>
-                    <textarea onChange={changeHandler} name="donate_description" id="" >Enter More Information</textarea>
+                    <textarea onChange={changeHandler} name="donation_description" id="" >Enter More Information</textarea>
                 </div>
+                {errors.user_name && <div className='validation-text'>{errors.user_name}</div>}
 
                 <button type='submit' className='form-submit-button'>Add</button>
             </form>

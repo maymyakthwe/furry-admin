@@ -5,8 +5,12 @@ import upload_area from '../../Assets/images/upload_area.svg'
 
 const AddPet = () => {
 
-    const [image, setImage] = useState(false);
-    const [pet, setPet] = useState({});
+    const [image, setImage] = useState("");
+    const [pet, setPet] = useState({
+        pet_type: 'dog',
+        pet_gender: 'male',
+        pet_color: 'white',
+    });
     const [errors, setErrors] = useState({});
     let token = localStorage.getItem('auth-token');
 
@@ -83,48 +87,54 @@ const AddPet = () => {
         }
     }
 
+
     const addPet = async () => {
         let responseData;
-        let response;
         let petData = pet;
         petData.token = token;
+        if(image){
+            let formData = new FormData();
+            formData.append("pet", image);
+            //image ko formData pyg
+            //key,value // pet,image
 
-        let formData = new FormData();
-        formData.append("pet", image);
-        //image ko formData pyg
-        //key,value // pet,image
-
-        await fetch('http://localhost:4000/upload', {
-            method: 'POST',
-            headers: {
-                Accept: 'application/json',
-            },
-            body: formData,
-        }).then((res) => res.json()).then((data) => { responseData = data });
-        //formData ko /upload ko POST
-        //response ko json pyg, responseData htl htae
-
-        if (responseData.success) {
-            petData.pet_image = responseData.image_url;
-            // console.log(JSON.stringify(petData));
-            await fetch('http://localhost:4000/pets', {
+            await fetch('http://localhost:4000/upload', {
                 method: 'POST',
                 headers: {
                     Accept: 'application/json',
-                    'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(petData),
-            }).then((res) => res.json()).then((data) => {response=data})
+                body: formData,
+            }).then((res) => res.json()).then((data) => { responseData = data });
+            //formData ko /upload ko POST
+            //response ko json pyg, responseData htl htae
 
-            if(response.success){
-                alert("Pet Added");
-                setImage('');
-                setPet({pet_name:'',pet_age:'',pet_description:''});
-                window.location.reload();
+            if (responseData.success) {
+                //add image to petData
+                petData.pet_image = responseData.image_url;
+                // console.log(JSON.stringify(petData));
+                await fetch('http://localhost:4000/pets', {
+                    method: 'POST',
+                    headers: {
+                        Accept: 'application/json',
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(petData),
+                }).then((res) => res.json()).then((data) => {
+                    if (data.success) {
+                        alert(data.message);
+                        setImage(false);
+                        setPet({ pet_name: '', pet_age: '', pet_description: '' });
+                        window.location.reload();
+                    } else {
+                        alert(data.message);
+                    }
+                })
             }else{
-                alert("failed");
+                alert("Photo Upload Failed");
             }
-        }
+        } else{
+            alert("Please select an image!");
+        } 
     }
 
   return (
@@ -135,7 +145,7 @@ const AddPet = () => {
                       Upload File :
                       <img src={image ? URL.createObjectURL(image) : upload_area} className='pet-input-thumnail-img' alt="" />
                   </label>
-                  <input  onChange={imageHandler} type="file" name='pet_image' id='file-input' hidden />
+                  <input onChange={imageHandler} type="file" name='pet_image' id='file-input' hidden />
                   {errors.pet_image && <div className='validation-text'>{errors.pet_image}</div>}
               </div>
               <div className="form-input">
@@ -228,6 +238,8 @@ const AddPet = () => {
                       <label htmlFor="not-playmate">No</label>
                   </div>
               </div>
+              {errors.user_name && <div className='validation-text'>{errors.user_name}</div>}
+
               <div className='submit'>
                   <button type='submit' >Add</button>
               </div>

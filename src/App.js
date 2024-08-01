@@ -12,23 +12,24 @@ import Login from './Components/Login/Login';
 
 
 function App() {
+
+  const token = localStorage.getItem('auth-token');
+
   return (
     <div className="App">
       <BrowserRouter>
         <AdminNav />
         <Routes>
-          <Route path='/' element={<Admin />}/>
-          <Route path='/pets' element={<ManagePets />}/>
-          <Route path='/adoptions' element={<Adoptions />}/>
-          <Route path='/donations' element={<Donations />}/>
-          <Route path='/login' element={<Login />}/>
+          <Route path='/home' element={token ? <Admin /> : <Login /> }/>
+          <Route path='/pets' element={token? < ManagePets /> :<Login/>}/>
+          <Route path='/adoptions' element={token ? <Adoptions /> : <Login />}/>
+          <Route path='/donations' element={token ? <Donations /> : <Login />}/>
+          <Route path='/' element={<Login />}/>
           <Route path='/signup' element={<Signup/>}/>
-          <Route path='/pets/:petId' element={<Eachpet />}/>
+          <Route path='/pets/:petId' element={token ? <Eachpet /> : <Login />}/>
         </Routes>
         <Footer/>
       </BrowserRouter>
-      
-      
     </div>
   );
 }

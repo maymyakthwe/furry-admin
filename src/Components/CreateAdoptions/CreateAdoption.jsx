@@ -5,6 +5,7 @@ const CreateAdoption = () => {
 
   const [adoption,setAdoption] =useState({})
   const [errors, setErrors] = useState({});
+  let token = localStorage.getItem('auth-token');
 
 
   const changeHandler = (e) => {
@@ -14,12 +15,9 @@ const CreateAdoption = () => {
     console.log(adoption);
   }
 
-  const addAdoption = async()=>{
-
+  const addAdoption = async(e)=>{
     let adoptionData=adoption;
-    let response;
 
-    let token = localStorage.getItem('auth-token');
     adoptionData.token=token;
 
     await fetch('http://localhost:4000/adoptions', {
@@ -29,14 +27,14 @@ const CreateAdoption = () => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(adoptionData),
-    }).then((res) => res.json()).then((data) => { response = data })
-    if (response.success) {
-      alert("Adoption Created");
-      setAdoption({ user_email: '', petId: '', adp_amount: '', adp_date: '' });
-      window.location.reload();
-    } else {
-      alert("failed");
-    }
+    }).then((res) => res.json()).then((data) => {
+      if (data.success) {
+        alert(data.message);
+        setAdoption({ user_email: '', petId: '', adp_amount: '', adp_date: '' });
+        window.location.reload();
+      } else {
+        alert(data.message);
+      } })
   }
 
   const validationCheck = (e) => {
@@ -44,20 +42,22 @@ const CreateAdoption = () => {
 
     const validationErrors = {};
 
+    //user validation
+    if (!token) {
+      validationErrors.user_name = "Please log in!";
+    }
+
     //email validation
     if (!adoption.user_email) {
       validationErrors.user_email = "Email is required";
     }
 
     //petID validation
-    if (!adoption.petId) {
-      validationErrors.petId = "Pet Id is required";
+    if (!adoption.pet_id) {
+      validationErrors.pet_id = "Pet Id is required";
     }
 
-    //email validation
-    if (!adoption.adp_amount) {
-      validationErrors.adp_amount = "Amount is required";
-    }
+    
 
     setErrors(validationErrors);
 
@@ -80,8 +80,8 @@ const CreateAdoption = () => {
         <div className="form-input">
           <label htmlFor="" >Pet ID :</label>
           <div>
-            <input onChange={changeHandler} type="text" name='petId' placeholder="enter pet's  ID" />
-            {errors.petId && <div className='validation-text'>{errors.petId}</div>}
+            <input onChange={changeHandler} type="text" name='pet_id' placeholder="enter pet's  ID" />
+            {errors.petId && <div className='validation-text'>{errors.pet_id}</div>}
           </div>
         </div>
 
@@ -101,6 +101,8 @@ const CreateAdoption = () => {
           <label htmlFor="" >Description :</label>
           <textarea onChange={changeHandler} name="adp_description" id="" >Enter More Information</textarea>
         </div>
+        {errors.user_name && <div className='validation-text'>{errors.user_name}</div>}
+
         <button type='submit' className='form-submit-button'>Add</button>
       </form>
     </div>
